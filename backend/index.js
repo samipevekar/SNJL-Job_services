@@ -16,13 +16,17 @@ const PORT = process.env.PORT || 4000
 
 connectToMongo()
 
+app.get('/',(req,res)=>{
+    res.send("Hello World")
+})
+
 app.use('/api/user', userRoutes)
 app.use('/api/job', jobRoutes)
 app.use('/api/posted-job', postedJobRoutes)
 
 cron.schedule('*/4 * * * *', async () => {
   try {
-      const response = await axios.get(`${ 'https://snjl-ems.onrender.com' || `http://localhost:${PORT}`}/`, {
+      const response = await axios.get(`${ 'https://snjl-job-services-backend.onrender.com' || `http://localhost:${PORT}`}/`, {
           family: 4  // Force IPv4
       });
       console.log('Pinged the server:', response.data);

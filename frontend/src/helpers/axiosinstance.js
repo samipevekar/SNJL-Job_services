@@ -2,7 +2,9 @@ import axios from "axios";
 import { getToken } from "../storage/AuthStorage";
 
 
-const BASE_URL = "http://192.168.182.81:4000/api";
+// const BASE_URL = "http://192.168.182.81:4000/api";
+
+const BASE_URL = "https://snjl-job-services-backend.onrender.com/api";
 
 
 const axiosInstance = axios.create({
