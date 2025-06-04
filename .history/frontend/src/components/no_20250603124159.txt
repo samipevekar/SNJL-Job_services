@@ -1,0 +1,226 @@
+<Modal
+        visible={editModalVisible}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={() => setEditModalVisible(false)}>
+        <ScrollView contentContainerStyle={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Edit Profile</Text>
+            <TouchableOpacity onPress={() => setEditModalVisible(false)}>
+              <Text style={styles.modalClose}>Close</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.formContainer}>
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Full Name</Text>
+              <Controller
+                control={control}
+                rules={{required: 'Name is required'}}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Your name"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="name"
+              />
+              {errors.name && (
+                <Text style={styles.errorText}>{errors.name.message}</Text>
+              )}
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Email</Text>
+              <Controller
+                control={control}
+                rules={{
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: 'Invalid email address',
+                  },
+                }}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Your email"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="email"
+              />
+              {errors.email && (
+                <Text style={styles.errorText}>{errors.email.message}</Text>
+              )}
+            </View>
+
+            {/* <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Email</Text>
+              <TextInput
+                style={[styles.input]}
+                value={user.email}
+              />
+            </View> */}
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Phone</Text>
+              <Controller
+                control={control}
+                rules={{
+                  minLength: {
+                    value: 10,
+                    message: 'Phone must be at least 10 characters',
+                  },
+                }}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Your phone number"
+                    keyboardType="phone-pad"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="phone"
+              />
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Address</Text>
+              <Controller
+                control={control}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Your address"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    multiline
+                  />
+                )}
+                name="address"
+              />
+            </View>
+
+            {!isEditingPassword ? (
+              <TouchableOpacity
+                style={styles.changePasswordButton}
+                onPress={() => setIsEditingPassword(true)}>
+                <Text style={styles.changePasswordButtonText}>
+                  Change Password
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Current Password</Text>
+                  <Controller
+                    control={control}
+                    rules={{required: 'Current password is required'}}
+                    render={({field: {onChange, onBlur, value}}) => (
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Current password"
+                        secureTextEntry
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                      />
+                    )}
+                    name="currentPassword"
+                  />
+                  {errors.currentPassword && (
+                    <Text style={styles.errorText}>
+                      {errors.currentPassword.message}
+                    </Text>
+                  )}
+                </View>
+
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>New Password</Text>
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: 'New password is required',
+                      minLength: {
+                        value: 6,
+                        message: 'Password must be at least 6 characters',
+                      },
+                    }}
+                    render={({field: {onChange, onBlur, value}}) => (
+                      <TextInput
+                        style={styles.input}
+                        placeholder="New password"
+                        secureTextEntry
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                      />
+                    )}
+                    name="newPassword"
+                  />
+                  {errors.newPassword && (
+                    <Text style={styles.errorText}>
+                      {errors.newPassword.message}
+                    </Text>
+                  )}
+                </View>
+
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>Confirm New Password</Text>
+                  <Controller
+                    control={control}
+                    rules={{
+                      required: 'Please confirm your new password',
+                      validate: value =>
+                        value === control._formValues.newPassword ||
+                        'Passwords do not match',
+                    }}
+                    render={({field: {onChange, onBlur, value}}) => (
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Confirm new password"
+                        secureTextEntry
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                      />
+                    )}
+                    name="confirmPassword"
+                  />
+                  {errors.confirmPassword && (
+                    <Text style={styles.errorText}>
+                      {errors.confirmPassword.message}
+                    </Text>
+                  )}
+                </View>
+
+                <TouchableOpacity
+                  style={styles.cancelPasswordButton}
+                  onPress={() => setIsEditingPassword(false)}>
+                  <Text style={styles.cancelPasswordButtonText}>
+                    Cancel Password Change
+                  </Text>
+                </TouchableOpacity>
+              </>
+            )}
+
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={handleSubmit(handleEditProfile)}
+              disabled={loading}>
+              <Text style={styles.saveButtonText}>
+                {loading ? 'Saving...' : 'Save Changes'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </Modal>

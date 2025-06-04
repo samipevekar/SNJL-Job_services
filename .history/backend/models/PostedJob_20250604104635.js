@@ -1,0 +1,13 @@
+import mongoose, { Schema, model } from "mongoose";
+
+const postedJobSchema = new Schema({
+  user: { type: mongoose.Types.ObjectId, ref: "User" , required: true},
+  jobName: { type: String, required: true, trim: true },
+  jobStatus: { type: String, required: true, default: "pending", enum:["pending","completed","rejected"]},
+  jobAddress: { type: String, required: true, trim: true},
+  jobDescription: { type: String, required: true, trim: true},
+  phone: { type: String, trim: true }
+
+}, { timestamps: true });
+
+export default model("PostedJob", postedJobSchema);
