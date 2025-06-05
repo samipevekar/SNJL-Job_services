@@ -20,7 +20,7 @@ export default function TabNavigation() {
     dispatch(getMeAsync());
   }, []);
 
-  if(!user) return <ActivityIndicator size={'large'} color={colors.primary} />
+  if(!user) return <ActivityIndicator  size={'large'} color={colors.primary} style={{margin:'auto'}} />
 
   return (
     <Tab.Navigator

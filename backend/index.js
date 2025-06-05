@@ -5,6 +5,7 @@ import userRoutes from './routes/userRoutes.js'
 import jobRoutes from './routes/jobRoutes.js'
 import postedJobRoutes from './routes/postedJobRoutes.js'
 import cron from 'node-cron'
+import axios from 'axios'
 
 dotenv.config()
 
