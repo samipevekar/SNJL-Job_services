@@ -21,7 +21,7 @@ import {
   selectAuthLoading,
   clearError,
 } from '../../redux/slice/authSlice';
-import { getRecruiterJobsAsync, selectJobs } from '../../redux/slice/postedJobSlice';
+import { getRecruiterJobsAsync, selectJobLoading, selectJobs } from '../../redux/slice/postedJobSlice';
 import colors from '../../theme/colors';
 import { removeToken } from '../../storage/AuthStorage';
 import PostedJobCard from '../../components/PostedJobCard';
@@ -30,6 +30,7 @@ const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const loading = useSelector(selectAuthLoading);
+  const postedJobLoading = useSelector(selectJobLoading)
   const jobs = useSelector(selectJobs);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
@@ -129,7 +130,6 @@ const ProfileScreen = ({ navigation }) => {
     );
   }
 
-  console.log(jobs)
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
@@ -171,14 +171,14 @@ const ProfileScreen = ({ navigation }) => {
             <Text style={styles.editButtonText}>Edit Profile</Text>
           </TouchableOpacity>
 
-          {user.role === 'recruiter' && jobs.length > 0 && (
+          {user.role === 'recruiter' && jobs.length > 0 ? (
             <View style={styles.jobsSection}>
               <Text style={styles.sectionTitle}>Your Posted Jobs</Text>
               {jobs.map((job) => (
                 <PostedJobCard key={job._id} job={job} />
               ))}
             </View>
-          )}
+          ):(postedJobLoading ? <ActivityIndicator size={'large'} color={colors.primary} /> : null)}
         </View>
 
         {/* Edit Profile Modal (keep existing modal code) */}

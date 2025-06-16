@@ -16,13 +16,16 @@ import { useForm, Controller } from 'react-hook-form';
 import { postJobAsync } from '../../redux/slice/postedJobSlice';
 import JobCard from '../../components/JobCard';
 import colors from '../../theme/colors';
-import { getAllJobsAsync, selectJobLoading, selectJobs } from '../../redux/slice/jobSlice';
+import { getAllJobsAsync, selectJobLoading as jobLoading, selectJobs } from '../../redux/slice/jobSlice';
+import { selectJobLoading } from '../../redux/slice/postedJobSlice';
 import { selectUser } from '../../redux/slice/authSlice';
 
 const Home = () => {
   const dispatch = useDispatch();
   const jobs = useSelector(selectJobs);
-  const loading = useSelector(selectJobLoading);
+  const loading = useSelector(jobLoading);
+  const postJobLoading = useSelector(selectJobLoading)
+  console.log(loading)
   const user = useSelector(selectUser);
   const [selectedJob, setSelectedJob] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -91,6 +94,7 @@ const Home = () => {
         contentContainerStyle={styles.listContent}
         refreshing={loading}
         onRefresh={() => dispatch(getAllJobsAsync())}
+        numColumns={2}
       />
 
       <Modal
@@ -192,7 +196,7 @@ const Home = () => {
               disabled={loading}
             >
               <Text style={styles.submitButtonText}>
-                {loading ? 'Posting...' : 'Post Job'}
+                {postJobLoading ? 'Posting...' : 'Post Job'}
               </Text>
             </TouchableOpacity>
           </ScrollView>

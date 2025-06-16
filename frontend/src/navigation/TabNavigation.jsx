@@ -9,19 +9,23 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getMeAsync, selectUser} from '../redux/slice/authSlice';
 import AdminDashboard from '../screens/Admin/AdminDashboard';
 import { ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigation() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  const navigation = useNavigation()
 
   useEffect(() => {
     dispatch(getMeAsync());
   }, []);
 
   if(!user) return <ActivityIndicator  size={'large'} color={colors.primary} style={{margin:'auto'}} />
-
+  // if(!user) {
+  //   navigation.navigate('Login')
+  // }
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
